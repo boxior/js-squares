@@ -157,3 +157,9 @@ function sort() {
 
 App.init();
 
+// localStorage.setItem("Ключ", JSON.stringify(App));
+
+// var App = {};
+// if (localStorage.getItem("Ключ")) {
+//   App = JSON.parse(localStorage.getItem("Ключ"));
+// }
