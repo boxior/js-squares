@@ -41,12 +41,13 @@ body {
 
 .square span {
   position: absolute;
-  top: 50%;
+  /*top: 50%;*/
   left: 0;
-  right: 0;
-  margin: auto;
-  text-align: center;
-  transform: translateY(-50%);
+  line-height: 1;
+  /*right: 0;*/
+  /*margin: auto;*/
+  /*text-align: center;*/
+  /*transform: translateY(-50%);*/
 }
 
 

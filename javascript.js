@@ -1,13 +1,11 @@
 'use strict';
-
-
+var stor = localStorage.getItem('storage');
 var App = {
 	url: 'data.json',
 	items: [],
 	container : document.getElementById("container"),
 	button : document.getElementById("btn-sort"),
-	sortBy: 'ASC',
-
+	sortBy: stor,
 
 	init: function(){
 		getObjects(this.url);
@@ -15,25 +13,24 @@ var App = {
 	},
 	buttonClick: buttonClick,
 	render: render,
-	sort: sort
+	sort: sort,
 }
 
-console.log(App);
 
 function getObjects(url){
-
-	// take json from url
+	
 	$.getJSON(url, function(data) {
 		parseObj(data);
+		App.sort();
 		App.render();
 	});
 
-	// parse json object to array
+	
 	var i = 0;
 	function parseObj(data) {	
 		for (var key in data) {
 			if (typeof data[key] !== 'object') {
-				App.items.push({ 'order': key, 'color': data[key], 'parseOrder' : i});console.log(i);
+				App.items.push({ 'order': key, 'color': data[key], 'parseOrder' : i});
 			} else {
 				parseObj(data[key]);
 				i--;
@@ -45,12 +42,11 @@ function getObjects(url){
 
 }
 
-
 function render() {
 	var self = this; //App
 	var borderWidth;
 	var item;
-
+	var borderStorage = localStorage.getItem('border');
 	// clear container
 	self.container.innerHTML = '';
 
@@ -60,7 +56,6 @@ function render() {
 		item.innerHTML = '<span>' + self.items[i]['order'] + '</span>';
 		item.className += 'square';
 		self.container.appendChild(item);
-
 		borderWidth = item.style.borderWidth = self.items[i].order + "px";
 		item.style.borderStyle = 'solid';
 
@@ -113,8 +108,11 @@ function mouseOverOut(event) {
 }
 
 function mouseClick(e) {
+
 	var clickBorderStart = e.currentTarget.style.borderWidth;
 	var clickBorderEnd = parseInt(clickBorderStart) * 3 + 'px';
+
+
 
 	if (e.type == 'click' && !e.currentTarget.classList.contains('second-border')) {
 		e.currentTarget.style.borderWidth = clickBorderEnd;
@@ -124,10 +122,11 @@ function mouseClick(e) {
 		e.currentTarget.classList.remove('second-border');
 	}
 }
-
 function sort() {
 
-	console.log(this.sortBy);
+	localStorage.setItem('storage', this.sortBy);
+	var stor = localStorage.getItem('storage');
+
 	switch(this.sortBy) {
 
 		case 'ASC' :
@@ -135,7 +134,7 @@ function sort() {
 				return (b.order - a.order);
 			});
 			this.sortBy = 'DESC';
-
+			container.setAttribute('data-storage', 'true');
 			break;
 
 		case 'DESC' :
@@ -143,23 +142,21 @@ function sort() {
 					return (a.order - b.order);
 				});
 			this.sortBy = 'default';
-
+			container.setAttribute('data-storage', 'true');
+	
 			break;
+
 		default: 
 			this.items = this.items.sort(function(b, a) {
 				return (b.parseOrder - a.parseOrder);
 			});
 			this.sortBy = 'ASC';
+			container.setAttribute('data-storage', 'false');
+			
 			break;
 	}
+	
 }
-
 
 App.init();
 
-// localStorage.setItem("Ключ", JSON.stringify(App));
-
-// var App = {};
-// if (localStorage.getItem("Ключ")) {
-//   App = JSON.parse(localStorage.getItem("Ключ"));
-// }
