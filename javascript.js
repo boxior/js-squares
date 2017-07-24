@@ -1,11 +1,11 @@
 'use strict';
-var stor = localStorage.getItem('storage');
+var storage = localStorage.getItem('storage');
 var App = {
 	url: 'data.json',
 	items: [],
 	container : document.getElementById("container"),
 	button : document.getElementById("btn-sort"),
-	sortBy: stor,
+	sortBy: storage,
 
 	init: function(){
 		getObjects(this.url);
@@ -125,7 +125,6 @@ function mouseClick(e) {
 function sort() {
 
 	localStorage.setItem('storage', this.sortBy);
-	var stor = localStorage.getItem('storage');
 
 	switch(this.sortBy) {
 
